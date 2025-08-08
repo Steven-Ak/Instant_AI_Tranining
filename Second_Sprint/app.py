@@ -3,6 +3,7 @@ import tensorflow as tf
 import numpy as np
 from PIL import Image
 import cv2
+import os
 
 # App Title
 st.set_page_config(page_title="Brain Tumor AI Diagnosis", layout="centered")
@@ -15,12 +16,12 @@ model_choice = st.radio("Choose a model:", ["Classification", "Segmentation"])
 # Load Models
 @st.cache_resource
 def load_classifier():
-    path = r"C:\Instant_AI_Training\Second Sprint\brain_tumor_classifier_improved_v4.keras"
+    path = os.path.join(os.path.dirname(__file__), "brain_tumor_classifier_improved_v4.keras")
     return tf.keras.models.load_model(path)
 
 @st.cache_resource
 def load_segmenter():
-    path = r"C:\Instant_AI_Training\Second Sprint\brain_tumor_segmentation_unet.keras"
+    path = os.path.join(os.path.dirname(__file__), "brain_tumor_segmentation_unet.keras")
     return tf.keras.models.load_model(path, compile=False)
 
 classifier_model = load_classifier()
