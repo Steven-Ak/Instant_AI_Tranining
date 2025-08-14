@@ -2,6 +2,7 @@ import streamlit as st
 from transformers import pipeline
 import PyPDF2
 import docx
+import torch
 
 # Load models
 @st.cache_resource
