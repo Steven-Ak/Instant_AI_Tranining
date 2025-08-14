@@ -2,12 +2,22 @@ import streamlit as st
 from transformers import pipeline
 import PyPDF2
 import docx
+import torch
 
-# Load models at app start
+# Load both models once and keep cached in memory
 @st.cache_resource
 def load_models():
-    summarizer = pipeline("summarization", model="facebook/bart-large-cnn")
-    qa_model = pipeline("question-answering", model="distilbert-base-uncased-distilled-squad")
+    device = 0 if torch.cuda.is_available() else -1  # Use GPU if available
+    summarizer = pipeline(
+        "summarization", 
+        model="facebook/bart-large-cnn", 
+        device=device
+    )
+    qa_model = pipeline(
+        "question-answering", 
+        model="bert-large-uncased-whole-word-masking-finetuned-squad",
+        device=device
+    )
     return summarizer, qa_model
 
 summarizer, qa_model = load_models()
@@ -36,13 +46,20 @@ if uploaded_file is not None:
     st.success(f"Loaded {file_type.upper()} file successfully!")
 
 else:
+    # Manual paste
     text = st.text_area("Or paste your article or document here:", height=300)
 
 # Summarization
 if text.strip():
     if st.button("Summarize Text"):
-        with st.spinner("Summarizing..."):
-            summary = summarizer(text[:3000], max_length=150, min_length=50, do_sample=False)[0]['summary_text']
+        with torch.no_grad():  # Speed up inference
+            with st.spinner("Summarizing..."):
+                summary = summarizer(
+                    text, 
+                    max_length=150, 
+                    min_length=50, 
+                    do_sample=False
+                )[0]['summary_text']
         st.subheader("Summary")
         st.write(summary)
 
@@ -50,6 +67,7 @@ if text.strip():
     st.subheader("Ask a Question about the Text")
     question = st.text_input("Your question:")
     if question:
-        with st.spinner("Finding answer..."):
-            answer = qa_model(question=question, context=text[:3000])
+        with torch.no_grad():
+            with st.spinner("Finding answer..."):
+                answer = qa_model(question=question, context=text)
         st.write(f"**Answer:** {answer['answer']} (score: {answer['score']:.2f})")
