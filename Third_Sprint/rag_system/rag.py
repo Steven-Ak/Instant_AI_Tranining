@@ -26,7 +26,7 @@ def get_llm():
     gen_pipeline = pipeline(
         "text2text-generation",
         model="google/flan-t5-small",
-        device=0                      
+        device=-1                      
     )
     return HuggingFacePipeline(pipeline=gen_pipeline)
 
