@@ -1,0 +1,9 @@
+faiss-cpu
+chromadb
+langchain
+transformers
+sentence-transformers
+pypdf
+streamlit
+flask
+torch
