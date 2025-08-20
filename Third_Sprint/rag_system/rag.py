@@ -25,7 +25,7 @@ def create_vector_db(chunks, persist_path="db"):
 def get_llm():
     gen_pipeline = pipeline(
         "text2text-generation",
-        model="google/flan-t5-base",
+        model="google/flan-t5-small",
         device=0                      
     )
     return HuggingFacePipeline(pipeline=gen_pipeline)
