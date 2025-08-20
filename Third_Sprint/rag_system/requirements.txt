@@ -1,9 +1,8 @@
-faiss-cpu
-chromadb
 langchain
+langchain-community
+langchain-huggingface
 transformers
 sentence-transformers
+faiss-cpu
 pypdf
 streamlit
-flask
-torch
