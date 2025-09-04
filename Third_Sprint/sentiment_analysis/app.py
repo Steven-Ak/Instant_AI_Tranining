@@ -10,7 +10,7 @@ HF_REPO_ID = "stevenakram/sentiment_bert_model"
 tokenizer = AutoTokenizer.from_pretrained(HF_REPO_ID)
 model = TFAutoModelForSequenceClassification.from_pretrained(HF_REPO_ID)
 
-# Class names (update according to your model config)
+# Class names
 class_names = ['Irrelevant', 'Negative', 'Neutral', 'Positive']
 
 # Streamlit UI
@@ -43,4 +43,4 @@ if st.button("Predict"):
         st.success(f"Predicted Sentiment: **{predicted_class}**")
         st.write("### Class Probabilities:")
         for cls, prob in zip(class_names, probs):
-            st.write(f"{cls}: {prob:.2%}")  # nicer percentage format
+            st.write(f"{cls}: {prob:.2%}")
