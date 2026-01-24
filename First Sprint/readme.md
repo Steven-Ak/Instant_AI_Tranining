@@ -149,7 +149,7 @@ Update the connection string in the script:
 conn_str = (
     'DRIVER={ODBC Driver 17 for SQL Server};'
     'SERVER=YOUR_SERVER_NAME;'
-    'DATABASE=Instant Training;'
+    'DATABASE=YOUR_DB_NAME;'
     'Trusted_Connection=yes;'
 )
 ```
@@ -186,3 +186,4 @@ Data Analytics / Data Science Enthusiast
 ## License
 
 This project is for educational and portfolio purposes.
+
